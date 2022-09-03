@@ -15,7 +15,9 @@ node-modules-rm
 ```
 
 
-## 递归当前路径，移除所有 其他类型的文件夹
+## 递归当前路径，移除所有指定的文件夹
+
+如移除所有 `.turbo` 文件夹
 
 ```sh
 node-modules-rm --dir .turbo
