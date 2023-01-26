@@ -3,23 +3,27 @@ const fs = require("fs-extra");
 const { resolve } = require("path");
 const argv = process.argv.splice(2);
 
-let dirName = "node_modules";
+let dirNames = new Set();
 
 for (let i = 0; i < argv.length; i++) {
   const v = argv[i];
-  if (v === "--dir") {
-    dirName = argv[i + 1];
+  if (v) {
+    dirNames.add(v);
   }
 }
 
 const pwd = (...args) => resolve(process.cwd(), ...args);
 
 function readAndRemoveNodeModules(path) {
+  if (dirNames.size === 0) {
+    console.log("[error] Need input file or dir names.");
+    return;
+  }
   const dirs = fs.readdirSync(path);
   dirs.forEach((f) => {
     const np = resolve(path, f);
 
-    if (f === dirName) {
+    if (dirNames.has(f)) {
       fs.removeSync(np);
       console.log("removed: ", np);
     } else if (fs.existsSync(np)) {
